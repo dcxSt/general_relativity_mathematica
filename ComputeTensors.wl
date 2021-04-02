@@ -4,17 +4,47 @@
 
 BeginPacakge["ComputeTensors`"]
 
+Nonzero::usage="true if input is not zero"
 ComputeEinsteinTensor::usage="ComputeEinsteinTensor[g,x] where g is an nxn matrix and x is a n-vector will return the nxn einstein tensor with lowered indices"
+ComputeChristoffel::usage="compute the christoffel symbols a geometry"
+DisplayChristoffelSymbols::usage="takes [christoffel,coords] display nonzero christoffel symbols"
+$schwarzschildCoords::usage="polar coordinates are used"
+$schwarzschildMetric::usage="the scwarzschild metric in polar coordinates"
+
+(* defines some metrics and their coordinate systems *)
+schwarzschildCoords={t,r,\[Theta],\[Phi]};
+schwarzschildMetric=DiagonalMatrix[{-(1-R)/r,(1-R/r)^-1,r^2,r^2*Sin[\[Theta]^2]}];
+
+Print["hello print statement print print print"];
 
 Begin["`Private`"]
 
+(* helper *)
+Nonzero[num_]:=Not[StringMatchQ[ToString[num],"0"] || StringMatchQ[ToString[num],"0."]];
+
+(* compute stuff*)
+ComputeChristoffel[metric_,x_]:=
+	Block[{Dim, InvMetric, Christoffel,
+		sigma, mu, nu, alpha, beta, gamma},
+		Dim = Length[x];
+		InvMetric = Simplify[Inverse[metric]];
+		Christoffel = 
+			Table[ D[metric[[gamma,alpha]],x[[beta]]]
+				+ D[metric[[beta,gamma]],x[[alpha]]]
+				- D[metric[[alpha,beta]],x[[gamma]]],
+				{gamma,Dim},{alpha,Dim},{beta,Dim}];
+			(* the lower index part of christoffel symbol*)
+		Christoffel = Simplify[Christoffel];
+		Christoffel = (1/2) InvMetric . Christoffel;
+		Simplify[Christoffel]]
+
 ComputeEinsteinTensor[metric_,x_]:=
-  Block[ {Dim,InvMetric, Christoffel, Riemann,
-          Ricci, RicciScalar,
-          sigma, mu, nu, alpha, beta, gamma},
-          Dim = Length[x];
-          InvMetric = Simplify[Inverse[metric]];
-          Christoffel =
+	Block[ {Dim,InvMetric, Christoffel, Riemann,
+		Ricci, RicciScalar,
+		sigma, mu, nu, alpha, beta, gamma},
+		Dim = Length[x];
+		InvMetric = Simplify[Inverse[metric]];
+		Christoffel =
             Table[ D[metric[[gamma,alpha]],x[[beta]]]
                  + D[metric[[beta,gamma]],x[[alpha]]]
            		    - D[metric[[alpha,beta]],x[[gamma]]],
@@ -45,7 +75,21 @@ ComputeEinsteinTensor[metric_,x_]:=
           Ricci - (1/2) RicciScalar metric ]
 
 
-End[]
+(* display stuff *)
+DisplayChristoffelSymbols[christoffel_, x_] := 
+  Block[{i, j, k, dim},
+   dim = Length[x];
+   For[i = 1, i <= dim, i++,
+    For[j = 1, j <= dim, j++,
+     For[k = 1, k <= dim, k++,
+      If[Nonzero[christoffel[[i]][[j]][[k]]],
+       Print[
+        StringForm[
+         "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \
+\(`1`\)], \(`2`\\\ `3`\)]\)=`4`", x[[i]], x[[j]], 
+         x[[k]], christoffel[[i]][[j]][[k]]]]]]]]];
 
+
+End[]
 
 EndPackage[];
