@@ -5,25 +5,30 @@
 BeginPacakge["ComputeTensors`"]
 
 Nonzero::usage="true if input is not zero"
+ComputeChristoffel::usage="compute the christoffel symbols a geometry"
+ComputeRicciTensor::usage="takes [g,x] computes the ricci tensor"
+ComputeRicciTensorAlt::usage="takes [g,x] computes ricci tensor, contracts indices 1 and 3 instead of 2 and 4"
 ComputeRiemann::usage="takes [g,x] computes and returns riemann tensor, this is identical to Maloney's implementation";
 ComputeRiemannAlt::usage="takes [g,x] computes riemann tensor, alternative to Maloney's implementation, they disagree on the schwarzschild metric"
 ComputeRicciScalar::usage="computes the ricci scalar, takes [g,x]"
 ComputeEinsteinTensor::usage="ComputeEinsteinTensor[g,x] where g is an nxn matrix and x is a n-vector will return the nxn einstein tensor with lowered indices"
-ComputeChristoffel::usage="compute the christoffel symbols a geometry"
-ComputeRicciTensor::usage="takes [g,x] computes the ricci tensor"
-ComputeRicciTensorAlt::usage="takes [g,x] computes ricci tensor, contracts indices 1 and 3 instead of 2 and 4"
+ComputeEinsteinTensorAlt::usage="alternative computation of einstein tensor"
+DisplayMetric::usage="takes [metric, coords] displays nonzeor metric elements"
 DisplayChristoffelSymbols::usage="takes [christoffel,coords] display nonzero christoffel symbols"
 DisplayRiemann::usage="takes [riemannTensor,x] displays nonzero terms of riemann tensor"
 DisplayRicciTensor::usage="takes [ricciTensor,x] displays nonzero terms"
 DisplayEinstein::usage="takes [einsteinTensor,x] displays nonzero term"
 $schwarzschildCoords::usage="polar coordinates are used"
 $schwarzschildMetric::usage="the scwarzschild metric in polar coordinates"
-
-
+$antiDeSitterCoords::usage="polar coordinates"
+$antiDeSitterMetric::usage="anti de-Sitter space metric"
 
 (* defines some metrics and their coordinate systems *)
 schwarzschildCoords={t,r,\[Theta],\[Phi]};
 schwarzschildMetric=DiagonalMatrix[{-(1-R)/r,(1-R/r)^-1,r^2,r^2*Sin[\[Theta]^2]}];
+
+antiDeSitterCoords={t,r,\[Theta],\[Phi]};
+antiDeSitterMetric=DiagonalMatrix[{-(1+r^2/l^2) , (1+r^2/l^2)^(-1) , r^2 , Sin[\[Theta]]^2 * r^2}];
 
 Begin["`Private`"]
 
@@ -42,9 +47,9 @@ ComputeChristoffel[metric_,x_]:=
 				- D[metric[[alpha,beta]],x[[gamma]]],
 				{gamma,Dim},{alpha,Dim},{beta,Dim}];
 			(* the lower index part of christoffel symbol*)
-		Christoffel = Simplify[Christoffel];
 		Christoffel = (1/2) InvMetric . Christoffel;
 		Simplify[Christoffel]]
+
 
 (* Alternative implementation, this yeilds different results for the schwarzschild metric than Maloney's implementation *)
 ComputeRiemannAlt[metric_,x_]:=
@@ -55,27 +60,28 @@ ComputeRiemannAlt[metric_,x_]:=
 		Riemann = Table[ D[Christoffel[[sigma,alpha,nu]],x[[mu]]]
                     + Sum[Christoffel[[gamma,alpha,nu]] Christoffel[[sigma,gamma,mu]],{gamma,Dim} ],{sigma,Dim}, {alpha,Dim}, {mu,Dim}, {nu,Dim} ];
            	(* antisymmetrize Riemann tensor: *)
-        Riemann = Table[ Riemann[[sigma,alpha,mu,nu]] - Riemann[[sigma,alpha,nu,mu]],{sigma,Dim}, {alpha,Dim},{mu,Dim}, {nu,Dim} ]];
+        Riemann = Table[ Riemann[[sigma,alpha,mu,nu]] - Riemann[[sigma,alpha,nu,mu]],{sigma,Dim}, {alpha,Dim},{mu,Dim}, {nu,Dim} ];
+		Riemann];
 
 (* Maloney's implementation *)
 ComputeRiemann[metric_,x_]:=
-	Block[{Dim,Chr,Riemann,
-		l,i,k,j,m},
+	Block[{Dim,Chr,Riemann, sigma,rho,alpha,beta,gamma},
 		Dim=Length[x];
 		Chr = ComputeChristoffel[metric,x];
 		(* Return the Riemann Tensor *)
 		Simplify[Table[
-			D[Chr[[l,i,k]],x[[j]]]
-			- D[Chr[[l,j,k]],x[[i]]]
-			+ Sum[Chr[[m,i,k]]*Chr[[l,m,j]]
-				- Chr[[m,j,k]]*Chr[[l,m,i]],
-			{m,Dim}],{i,Dim},{j,Dim},{k,Dim},{l,Dim}]]]
+			D[Chr[[sigma,alpha,gamma]],x[[beta]]]
+			- D[Chr[[sigma,beta,gamma]],x[[alpha]]]
+			+ Sum[
+				Chr[[rho,alpha,gamma]]*Chr[[sigma,rho,beta]]
+				- Chr[[rho,beta,gamma]]*Chr[[sigma,rho,alpha]],
+			{rho,Dim}],{alpha,Dim},{beta,Dim},{gamma,Dim},{sigma,Dim}]]]
 
 (* in this implementation we contract 1st index with 3rd, in maloney's we contract the 2nd with the 4th *)
 ComputeRicciTensorAlt[metric_,x_]:=
 	Block[{Dim,Riemann,Ricci,i,j,k},
 		Dim=Length[x];
-		Riemann=ComputeRiemann[metric,x];
+		Riemann=ComputeRiemannAlt[metric,x];
 		(* Return Ricci Tensor *)
 		Simplify[Table[Sum[Riemann[[i,j,i,k]],{i,Dim}],
 			{j,Dim},{k,Dim}]]]
@@ -98,8 +104,7 @@ ComputeRicciScalar[metric_,x_]:=
 			{i,Dim},{j,Dim}]]]
 
 ComputeEinsteinTensor[metric_,x_]:=
-	Block[ {Dim, Ricci, RicciScalar,
-		i, j},
+	Block[ {Dim, Ricci, RicciScalar, i, j},
 		Dim = Length[x];
 		Ricci = ComputeRicciTensor[metric,x];
         RicciScalar = Sum[ Inverse[metric][[i,j]]
@@ -108,34 +113,51 @@ ComputeEinsteinTensor[metric_,x_]:=
         (* Return Einstein tensor: *)
         Simplify[Ricci - (1/2) RicciScalar metric] ]
 
+ComputeEinsteinTensorAlt[metric_,x_]:=
+	Block[ {Dim,Ricci, RicciScalar, i, j},
+		Dim = Length[x];
+		Ricci = ComputeRicciTensorAlt[metric,x];
+		RicciScalar = Sum[ Inverse[metric][[i,j]], {i,Dim},{j,Dim}];
+		(* Return Einstein tensor: *)
+		Simplify[Ricci - (1/2) RicciScalar metric] ]
+
 
 (* display stuff *)
+DisplayMetric[metric_,x_] := 
+	Block[{i,j,dim},
+		dim = Length[x];
+		For[i=1, i<=dim, i++,
+			For[j=1, j<=dim, j++,
+				If[Nonzero[metric[[i,j]]],
+					Print[StringForm[
+						"\!\(\*SubscriptBox[\(g\), \(`1`\\\ `2`\)]\)=`3`", x[[i]], x[[j]], metric[[i,j]]]]]]]]
+
 DisplayChristoffelSymbols[christoffel_, x_] := 
-  Block[{i, j, k, dim},
+  Block[{alpha, beta, gamma, dim},
    dim = Length[x];
-   For[i = 1, i <= dim, i++,
-    For[j = 1, j <= dim, j++,
-     For[k = 1, k <= dim, k++,
-      If[Nonzero[christoffel[[i]][[j]][[k]]],
+   For[alpha = 1, alpha <= dim, alpha++,
+    For[beta = 1, beta <= dim, beta++,
+     For[gamma = 1, gamma <= dim, gamma++,
+      If[Nonzero[christoffel[[alpha,beta,gamma]]],
        Print[
         StringForm[
          "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \
-\(`1`\)], \(`2`\\\ `3`\)]\)=`4`", x[[i]], x[[j]], 
-         x[[k]], christoffel[[i]][[j]][[k]]]]]]]]];
+\(`1`\)], \(`2`\\\ `3`\)]\)=`4`", x[[alpha]], x[[beta]], 
+         x[[gamma]], christoffel[[alpha,beta,gamma]]]]]]]]];
 
 DisplayRiemann[riemann_,x_] := 
-	Block[{i,j,k,l,dim},
+	Block[{alpha,beta,gamma,sigma,dim},
 	dim=Length[x];
-	   For[i = 1, i <= dim, i++,
-		For[j = 1, j <= dim, j++,
-		 For[k = 1, k <= dim, k++,
-		  For[l = 1, l <= dim, l++, 
-		   If[Nonzero[riemann[[i]][[j]][[k]][[l]]],
+	   For[alpha = 1, alpha <= dim, alpha++,
+		For[beta = 1, beta <= dim, beta++,
+		 For[gamma = 1, gamma <= dim, gamma++,
+		  For[sigma = 1, sigma <= dim, sigma++, 
+		   If[Nonzero[riemann[[alpha,beta,gamma,sigma]]],
 			Print[
 			 StringForm[
           "\!\(\*SuperscriptBox[SubscriptBox[\(R\), \(`1`\\\ `2`\\\ \
-`3`\)], \(`4`\)]\)=`5`", coords[[i]], coords[[j]], coords[[k]], 
-          coords[[l]], riemann[[i]][[j]][[k]][[l]] ]]]]]]]];
+`3`\)], \(`4`\)]\)=`5`", coords[[alpha]], coords[[beta]], coords[[gamma]], 
+          coords[[sigma]], riemann[[alpha,beta,gamma,sigma]] ]]]]]]]];
 
 DisplayRicciTensor[ricci_,x_] := 
 	Block[{Dim,i,j}, 
@@ -150,8 +172,8 @@ DisplayRicciTensor[ricci_,x_] :=
 DisplayEinstein[einstein_,x_] := 
 	Block[{i,j,Dim}, 
 	Dim=Length[x];
-	For[i = 1, i <= dim, i++,
-		For[j = 1, j <= dim, j++,
+	For[i = 1, i <= Dim, i++,
+		For[j = 1, j <= Dim, j++,
 		 If[Nonzero[einstein[[i,j]]],
 		  Print[
 		   StringForm["\!\(\*SubscriptBox[\(G\), \(`1`\\\ `2`\)]\)=`3`", 
