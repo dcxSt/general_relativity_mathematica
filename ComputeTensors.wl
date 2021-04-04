@@ -18,6 +18,8 @@ DisplayChristoffelSymbols::usage="takes [christoffel,coords] display nonzero chr
 DisplayRiemann::usage="takes [riemannTensor,x] displays nonzero terms of riemann tensor"
 DisplayRicciTensor::usage="takes [ricciTensor,x] displays nonzero terms"
 DisplayEinstein::usage="takes [einsteinTensor,x] displays nonzero term"
+GeodesicEquations::usage="takes [christoffel, x] displays general parameter geodesic equations"
+GeodesicEquationsAffine::usage="takes [christoffel, x] displays affine parameter geodesic equations"
 $schwarzschildCoords::usage="polar coordinates are used"
 $schwarzschildMetric::usage="the scwarzschild metric in polar coordinates"
 $antiDeSitterCoords::usage="polar coordinates"
@@ -178,6 +180,27 @@ DisplayEinstein[einstein_,x_] :=
 		  Print[
 		   StringForm["\!\(\*SubscriptBox[\(G\), \(`1`\\\ `2`\)]\)=`3`", 
 			coords[[i]], coords[[j]], einstein[[i,j]]]]]]]];
+
+(* takes christoffel symbols and metric, returns geodesic equations*)
+(* x should have componants written as functions of s, e.g. x[t[s],x[s]], s is the worldline parameter *)
+GeodesicEquations[Chr_,x_] := 
+	Block[{alpha,beta,gamma,Dim}
+		Dim=Length[s];
+		Simplify[
+			Table[
+				\[Lambda]*D[x[[gamma]],s] == 
+				D[D[x[[gamma]],s],s] + 
+				Sum[Chr[[gamma,alpha,beta]]*D[x[[alpha]],s]*D[x[[beta]],s],
+					{alpha,Dim},{beta,Dim},{gamma,Dim}]]]]
+
+GeodesicEquationsAffine[Chr_,x_] := 
+	Block[{alpha,beta,gamma,Dim}
+		Dim=Length[s];
+		Simplify[
+			Table[
+				0 == D[D[x[[gamma]],s],s] + 
+				Sum[Chr[[gamma,alpha,beta]]*D[x[[alpha]],s]*D[x[[beta]],s],
+					{alpha,Dim},{beta,Dim},{gamma,Dim}]]]]
 
 End[]
 
