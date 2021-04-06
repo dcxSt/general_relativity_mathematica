@@ -1,4 +1,4 @@
-# General Relativity Package(s)
+# General Relativity Package
 
 Lightweight mathematica package for computing : Christoffel symbols, Riemann Tensor, Ricci tensor, Ricci scalar, Einstein Tensor, Einstein Equations, raising and lowering indices of tensors for General relativity in any number of dimensions.
 

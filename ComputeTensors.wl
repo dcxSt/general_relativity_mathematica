@@ -2,10 +2,10 @@
 	dcxstephen@live.co.uk or
 	stephen.fay@mail.mcgill.ca	*)
 
-BeginPacakge["ComputeTensors`"]
+BeginPackage["ComputeTensors`"]
 
-Nonzero::usage="true if input is not zero"
-ComputeChristoffel::usage="compute the christoffel symbols a geometry"
+(*Nonzero::usage="true if input is not zero" *) (* dont think i need this , delete it at some point *)
+ComputeChristoffel::usage="takes [g,x] compute the christoffel symbols a geometry"
 ComputeRicciTensor::usage="takes [g,x] computes the ricci tensor"
 ComputeRicciTensorAlt::usage="takes [g,x] computes ricci tensor, contracts indices 1 and 3 instead of 2 and 4"
 ComputeRiemann::usage="takes [g,x] computes and returns riemann tensor, this is identical to Maloney's implementation";
@@ -26,13 +26,15 @@ $antiDeSitterCoords::usage="polar coordinates"
 $antiDeSitterMetric::usage="anti de-Sitter space metric"
 
 (* defines some metrics and their coordinate systems *)
-schwarzschildCoords={t,r,\[Theta],\[Phi]};
-schwarzschildMetric=DiagonalMatrix[{-(1-R)/r,(1-R/r)^-1,r^2,r^2*Sin[\[Theta]^2]}];
+antiDeSitterCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
+antiDeSitterMetric=Block[{r,l,\[Theta]},DiagonalMatrix[{-(1+r^2/l^2) , (1+r^2/l^2)^(-1) , r^2 , Sin[\[Theta]]^2 * r^2}]];
 
-antiDeSitterCoords={t,r,\[Theta],\[Phi]};
-antiDeSitterMetric=DiagonalMatrix[{-(1+r^2/l^2) , (1+r^2/l^2)^(-1) , r^2 , Sin[\[Theta]]^2 * r^2}];
+schwarzschildCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
+schwarzschildMetric=Block[{r,\[Theta],R},DiagonalMatrix[{-(1-R/r),(1-R/r)^-1,r^2,r^2*Sin[\[Theta]^2]}]];
 
 Begin["`Private`"]
+
+
 
 (* helper *)
 Nonzero[num_]:=Not[StringMatchQ[ToString[num],"0"] || StringMatchQ[ToString[num],"0."]];
@@ -99,19 +101,19 @@ ComputeRicciTensor[metric_,x_]:=
 
 (* Contracts the ricci tensor with the inverse metric *)
 ComputeRicciScalar[metric_,x_]:=
-	Block[{Dim,RicciTensor,i,j},
+	Block[{Dim,RicciTensor,alpha,beta},
 		Dim=Length[x];
 		RicciTensor=ComputeRicciTensor[metric,x];
-		Simplify[Sum[Inverse[metric][[i,j]]*RicciTensor[[i,j]],
-			{i,Dim},{j,Dim}]]]
+		Simplify[Sum[Inverse[metric][[alpha,beta]]*RicciTensor[[alpha,beta]],
+			{alpha,Dim},{beta,Dim}]]]
 
 ComputeEinsteinTensor[metric_,x_]:=
-	Block[ {Dim, Ricci, RicciScalar, i, j},
+	Block[ {Dim, Ricci, RicciScalar, alpha, beta},
 		Dim = Length[x];
 		Ricci = ComputeRicciTensor[metric,x];
-        RicciScalar = Sum[ Inverse[metric][[i,j]]
-                                 Ricci[[i,j]],
-                                 {i,Dim}, {j,Dim}];
+        RicciScalar = Sum[ Inverse[metric][[alpha,beta]]
+                                 Ricci[[alpha,beta]],
+                                 {alpha,Dim}, {beta,Dim}];
         (* Return Einstein tensor: *)
         Simplify[Ricci - (1/2) RicciScalar metric] ]
 
@@ -184,23 +186,23 @@ DisplayEinstein[einstein_,x_] :=
 (* takes christoffel symbols and metric, returns geodesic equations*)
 (* x should have componants written as functions of s, e.g. x[t[s],x[s]], s is the worldline parameter *)
 GeodesicEquations[Chr_,x_] := 
-	Block[{alpha,beta,gamma,Dim}
-		Dim=Length[s];
+	Block[{alpha,beta,gamma,Dim},
+		Dim=Length[x];
 		Simplify[
 			Table[
 				\[Lambda]*D[x[[gamma]],s] == 
 				D[D[x[[gamma]],s],s] + 
 				Sum[Chr[[gamma,alpha,beta]]*D[x[[alpha]],s]*D[x[[beta]],s],
-					{alpha,Dim},{beta,Dim},{gamma,Dim}]]]]
+					{alpha,Dim},{beta,Dim}],{gamma,Dim}]]]
 
 GeodesicEquationsAffine[Chr_,x_] := 
-	Block[{alpha,beta,gamma,Dim}
-		Dim=Length[s];
+	Block[{alpha,beta,gamma,Dim},
+		Dim=Length[x];
 		Simplify[
 			Table[
 				0 == D[D[x[[gamma]],s],s] + 
 				Sum[Chr[[gamma,alpha,beta]]*D[x[[alpha]],s]*D[x[[beta]],s],
-					{alpha,Dim},{beta,Dim},{gamma,Dim}]]]]
+					{alpha,Dim},{beta,Dim}],{gamma,Dim}]]]
 
 End[]
 
