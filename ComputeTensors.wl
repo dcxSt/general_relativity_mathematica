@@ -7,12 +7,9 @@ BeginPackage["ComputeTensors`"]
 (*Nonzero::usage="true if input is not zero" *) (* dont think i need this , delete it at some point *)
 ComputeChristoffel::usage="takes [g,x] compute the christoffel symbols a geometry"
 ComputeRicciTensor::usage="takes [g,x] computes the ricci tensor"
-ComputeRicciTensorAlt::usage="takes [g,x] computes ricci tensor, contracts indices 1 and 3 instead of 2 and 4"
 ComputeRiemann::usage="takes [g,x] computes and returns riemann tensor, this is identical to Maloney's implementation";
-ComputeRiemannAlt::usage="takes [g,x] computes riemann tensor, alternative to Maloney's implementation, they disagree on the schwarzschild metric"
 ComputeRicciScalar::usage="computes the ricci scalar, takes [g,x]"
 ComputeEinsteinTensor::usage="ComputeEinsteinTensor[g,x] where g is an nxn matrix and x is a n-vector will return the nxn einstein tensor with lowered indices"
-ComputeEinsteinTensorAlt::usage="alternative computation of einstein tensor"
 DisplayMetric::usage="takes [metric, coords] displays nonzeor metric elements"
 DisplayChristoffelSymbols::usage="takes [christoffel,coords] display nonzero christoffel symbols"
 DisplayRiemann::usage="takes [riemannTensor,x] displays nonzero terms of riemann tensor"
@@ -88,18 +85,6 @@ ComputeChristoffel[metric_,x_]:=
 		Simplify[Christoffel]]
 
 
-(* Alternative implementation, this yeilds different results for the schwarzschild metric than Maloney's implementation *)
-ComputeRiemannAlt[metric_,x_]:=
-	Block[{Dim,Christoffel,Riemann,
-		sigma, mu, nu, alpha, beta, gamma},
-		Dim = Length[x];
-		Christoffel = ComputeChristoffel[metric,x];
-		Riemann = Table[ D[Christoffel[[sigma,alpha,nu]],x[[mu]]]
-                    + Sum[Christoffel[[gamma,alpha,nu]] Christoffel[[sigma,gamma,mu]],{gamma,Dim} ],{sigma,Dim}, {alpha,Dim}, {mu,Dim}, {nu,Dim} ];
-           	(* antisymmetrize Riemann tensor: *)
-        Riemann = Table[ Riemann[[sigma,alpha,mu,nu]] - Riemann[[sigma,alpha,nu,mu]],{sigma,Dim}, {alpha,Dim},{mu,Dim}, {nu,Dim} ];
-		Riemann];
-
 (* Maloney's implementation *)
 ComputeRiemann[metric_,x_]:=
 	Block[{Dim,Chr,Riemann, sigma,rho,alpha,beta,gamma},
@@ -114,16 +99,7 @@ ComputeRiemann[metric_,x_]:=
 				- Chr[[rho,beta,gamma]]*Chr[[sigma,rho,alpha]],
 			{rho,Dim}],{alpha,Dim},{beta,Dim},{gamma,Dim},{sigma,Dim}]]]
 
-(* in this implementation we contract 1st index with 3rd, in maloney's we contract the 2nd with the 4th *)
-ComputeRicciTensorAlt[metric_,x_]:=
-	Block[{Dim,Riemann,Ricci,i,j,k},
-		Dim=Length[x];
-		Riemann=ComputeRiemannAlt[metric,x];
-		(* Return Ricci Tensor *)
-		Simplify[Table[Sum[Riemann[[i,j,i,k]],{i,Dim}],
-			{j,Dim},{k,Dim}]]]
-
-(* Maloney's implementation, contract indices 2 and 4 *)
+(* contract indices 2 and 4 *)
 ComputeRicciTensor[metric_,x_]:=
 	Block[{Dim,Riemann,Ricci,i,j,k},
 		Dim=Length[x];
@@ -149,15 +125,6 @@ ComputeEinsteinTensor[metric_,x_]:=
                                  {alpha,Dim}, {beta,Dim}];
         (* Return Einstein tensor: *)
         Simplify[Ricci - (1/2) RicciScalar metric] ]
-
-ComputeEinsteinTensorAlt[metric_,x_]:=
-	Block[ {Dim,Ricci, RicciScalar, i, j},
-		Dim = Length[x];
-		Ricci = ComputeRicciTensorAlt[metric,x];
-		RicciScalar = Sum[ Inverse[metric][[i,j]], {i,Dim},{j,Dim}];
-		(* Return Einstein tensor: *)
-		Simplify[Ricci - (1/2) RicciScalar metric] ]
-
 
 (* display stuff *)
 DisplayMetric[metric_,x_] := 
