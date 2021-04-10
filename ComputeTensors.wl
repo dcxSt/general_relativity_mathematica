@@ -20,10 +20,23 @@ DisplayRicciTensor::usage="takes [ricciTensor,x] displays nonzero terms"
 DisplayEinstein::usage="takes [einsteinTensor,x] displays nonzero term"
 GeodesicEquations::usage="takes [christoffel, x] displays general parameter geodesic equations"
 GeodesicEquationsAffine::usage="takes [christoffel, x] displays affine parameter geodesic equations"
-$schwarzschildCoords::usage="polar coordinates are used"
-$schwarzschildMetric::usage="the scwarzschild metric in polar coordinates"
-$antiDeSitterCoords::usage="polar coordinates"
+$schwarzschildCoords::usage="spherical coordinates are used"
+$schwarzschildMetric::usage="the scwarzschild metric in spherical coordinates"
+$antiDeSitterCoords::usage="spherical coordinates"
 $antiDeSitterMetric::usage="anti de-Sitter space metric"
+$frwFlatSphericalCoords::usage="spherical coords"
+$frwFlatSphericalMetric::usage="metric of flat frw space, in spherical coordinates"
+$frwFlatCartesianCoords::usage="cartesian coordinates"
+$frwFlatCartesianMetric::usage="metric of flat frw space in cartesian coordinates"
+$frwReducedCircumferenceSphericalCoords::usage="spherical coordinates"
+$frwReducedCircumferenceSphericalMetric::usage="positive or negative curvature frw reduced circumference coordinates, does not cover whole space"
+$frwHypersphericalPositiveCurvatureCoords::usage="Spherical coords"
+$frwHypersphericalPositiveCurvatureMetric::usage="hyperspherical coordinates for positive curvature (k>0) metric"
+$frwHypersphericalNegativeCurvatureCoords::usage="spherical coords"
+$frwHypersphericalNegativeCurvatureMetric::usage="hyperspherical coordinates for negative curvature (k<0) metric"
+$wormholeCoords::usage="spherical coordinates"
+$wormholeMetric::usage="the metric of a simple wormhole connecting two assymtotically minkowski spaces, assuming the function f(r) -> r^2 for as r -> infty"
+
 
 (* defines some metrics and their coordinate systems *)
 antiDeSitterCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
@@ -31,6 +44,26 @@ antiDeSitterMetric=Block[{r,l,\[Theta]},DiagonalMatrix[{-(1+r^2/l^2) , (1+r^2/l^
 
 schwarzschildCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
 schwarzschildMetric=Block[{r,\[Theta],R},DiagonalMatrix[{-(1-R/r),(1-R/r)^-1,r^2,r^2*Sin[\[Theta]^2]}]];
+
+
+frwFlatSphericalCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
+frwFlatSphericalMetric=Block[{r,a,\[Theta]},{-1,a[t]^2,r^2*a[t]^2,r^2*a[t]^2*Sin[\[Theta]]^2}];
+(*special case k=0 of reducedcircumference*)
+
+frwFlatCartesianCoords=Block[{t,x,y,z},{t,x,y,z}];
+frwFlatCartesianMetric=Block[{a},{-1,a[t]^2,a[t]^2,a[t]^2}];
+
+frwReducedCircumferenceSphericalCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
+frwReducedCircumferenceSphericalMetric=Block[{a,r,k,\[Theta]},{-1,a[t]^2,a[t]^2/(1-k*r^2),a[t]^2*r^2,a[t]^2*r^2*Sin[\[Theta]]^2}];
+
+frwHypersphericalPositiveCurvatureCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
+frwHypersphericalPositiveCurvatureMetric=Block[{r,\[Theta],k},DiagonalMatrix[{-1,1,Sin[r*Sqrt[k]]^2/k,Sin[r*Sqrt[k]]^2/k*Sin[\[Theta]]^2}]];
+
+frwHypersphericalNegativeCurvatureCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
+frwHypersphericalNegativeCurvatureMetric=Block[{r,k,\[Theta]},DiagonalMatrix[{-1,1,Sinh[r*Sqrt[k]]^2/Abs[k],Sinh[r*Sqrt[k]]^2/Abs[k]*Sin[\[Theta]]^2}]];
+
+wormholeCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
+wormholeMetric=Block[{r,\[Theta],f0},DiagonalMatrix[{-1,1,f0[r],Sin[\[Theta]]^2*f0[r]}]];
 
 Begin["`Private`"]
 
