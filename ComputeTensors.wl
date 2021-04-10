@@ -157,8 +157,8 @@ DisplayRiemann[riemann_,x_] :=
 			Print[
 			 StringForm[
           "\!\(\*SuperscriptBox[SubscriptBox[\(R\), \(`1`\\\ `2`\\\ \
-`3`\)], \(`4`\)]\)=`5`", coords[[alpha]], coords[[beta]], coords[[gamma]], 
-          coords[[sigma]], riemann[[alpha,beta,gamma,sigma]] ]]]]]]]];
+`3`\)], \(`4`\)]\)=`5`", x[[alpha]], x[[beta]], x[[gamma]], 
+          x[[sigma]], riemann[[alpha,beta,gamma,sigma]] ]]]]]]]];
 
 DisplayRicciTensor[ricci_,x_] := 
 	Block[{Dim,i,j}, 
@@ -181,10 +181,12 @@ DisplayEinstein[einstein_,x_] :=
 			x[[alpha]], x[[beta]], einstein[[alpha,beta]]]]]]]];
 
 (* takes christoffel symbols and metric, returns geodesic equations*)
-(* x should have componants written as functions of s, e.g. x[t[s],x[s]], s is the worldline parameter *)
+(* x should have componants written as functions of s, e.g. x[t[s],y[s]], s is the worldline parameter *)
 GeodesicEquations[Chr_,x_] := 
 	Block[{alpha,beta,gamma,Dim},
 		Dim=Length[x];
+		Print[D[x[[2]],s]];
+		Print[x]
 		Simplify[
 			Table[
 				\[Lambda]*D[x[[gamma]],s] == 

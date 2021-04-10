@@ -1,0 +1,755 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     34858,        747]
+NotebookOptionsPosition[     31891,        694]
+NotebookOutlinePosition[     32290,        710]
+CellTagsIndexPosition[     32247,        707]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Example1, wormhole geometry", "Subsubsection",
+ CellChangeTimes->{{3.827061959805936*^9, 
+  3.827061966421669*^9}},ExpressionUUID->"01b4bbc3-8de3-490b-b97f-\
+53000c195d6f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"SetDirectory", "[", 
+  RowBox[{"NotebookDirectory", "[", "]"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"<<", "ComputeTensors.wl"}]}], "Input",
+ CellChangeTimes->{{3.826987467680318*^9, 3.8269876208097754`*^9}, 
+   3.826988557046324*^9},
+ CellLabel->"In[72]:=",ExpressionUUID->"3f535c68-a061-4eeb-98f3-b090469aec53"],
+
+Cell[BoxData["\<\"/home/steve/Documents/code/general_relativity_mathematica\"\
+\>"], "Output",
+ CellChangeTimes->{
+  3.826987774495101*^9, 3.826988248973983*^9, 3.826988452534883*^9, {
+   3.826988537321486*^9, 3.8269885950251713`*^9}, {3.826988775669228*^9, 
+   3.826988777516488*^9}, 3.82698882288144*^9, {3.826988957519293*^9, 
+   3.82698897375738*^9}, 3.8269890504343557`*^9, 3.827054285781958*^9, 
+   3.82705631132336*^9, 3.827056778031502*^9, 3.827057129521923*^9, {
+   3.827057284955051*^9, 3.8270573038133087`*^9}, {3.82705744192903*^9, 
+   3.8270574530272703`*^9}, 3.827057622865383*^9, {3.827058425970433*^9, 
+   3.827058439154984*^9}},
+ CellLabel->"Out[72]=",ExpressionUUID->"fa94acab-cd5d-4edb-a54d-a160c12fbf39"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"metric", "=", "wormholeMetric"}], "\[IndentingNewLine]", 
+ RowBox[{"coords", "=", "wormholeCoords"}]}], "Input",
+ CellChangeTimes->{{3.826988797714892*^9, 3.8269888007851048`*^9}, {
+   3.8269888402167263`*^9, 3.826988841101569*^9}, {3.826989112612447*^9, 
+   3.826989116385812*^9}, 3.827058186202256*^9},
+ CellLabel->"In[42]:=",ExpressionUUID->"991519cc-be6b-4eab-b1fb-bda330fb413d"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"-", "1"}], ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "1", ",", "0", ",", "0"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"f0", "[", "r", "]"}], ",", "0"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", 
+     RowBox[{
+      RowBox[{"f0", "[", "r", "]"}], " ", 
+      SuperscriptBox[
+       RowBox[{"Sin", "[", "\[Theta]", "]"}], "2"]}]}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.826988802064769*^9, 3.826988841557248*^9}, 
+   3.826988927106389*^9, {3.826988958748412*^9, 3.8269889746541157`*^9}, 
+   3.8269890505279903`*^9, 3.826989119687595*^9, 3.827057071649827*^9, 
+   3.827057731360594*^9, 3.827058186906665*^9},
+ CellLabel->"Out[42]=",ExpressionUUID->"68f48b1f-100e-45aa-a8ef-6b329d36c2cf"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"t", ",", "r", ",", "\[Theta]", ",", "\[Phi]"}], "}"}]], "Output",
+ CellChangeTimes->{{3.826988802064769*^9, 3.826988841557248*^9}, 
+   3.826988927106389*^9, {3.826988958748412*^9, 3.8269889746541157`*^9}, 
+   3.8269890505279903`*^9, 3.826989119687595*^9, 3.827057071649827*^9, 
+   3.827057731360594*^9, 3.8270581869129143`*^9},
+ CellLabel->"Out[43]=",ExpressionUUID->"b744a3d1-3237-4038-8eec-a5e491b26059"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"christoffel", "=", 
+   RowBox[{"ComputeChristoffel", "[", 
+    RowBox[{"metric", ",", "coords"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ricciTensor", "=", 
+   RowBox[{"ComputeRicciTensor", "[", 
+    RowBox[{"metric", ",", "coords"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ricciScalar", "=", 
+   RowBox[{"ComputeRicciScalar", "[", 
+    RowBox[{"metric", ",", "coords"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"riemannTensor", "=", 
+   RowBox[{"ComputeRiemann", "[", 
+    RowBox[{"metric", ",", "coords"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"einsteinTensor", "=", 
+  RowBox[{"ComputeEinsteinTensor", "[", 
+   RowBox[{"metric", ",", "coords"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"DisplayChristoffelSymbols", "[", 
+  RowBox[{"christoffel", ",", "coords"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"DisplayEinstein", "[", 
+  RowBox[{"einsteinTensor", ",", "coords"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.82698886130243*^9, 3.826988866959216*^9}, {
+  3.826989103371874*^9, 3.8269891099137993`*^9}, {3.827057095136924*^9, 
+  3.82705710336718*^9}, {3.827057808624909*^9, 3.827057886456667*^9}, {
+  3.827057919062437*^9, 3.827057929339239*^9}, {3.827057983290168*^9, 
+  3.827058024627743*^9}, {3.827058141915485*^9, 3.827058146306204*^9}, {
+  3.8270582208136253`*^9, 3.8270582319209623`*^9}, {3.827058331913196*^9, 
+  3.82705834514981*^9}, {3.827058756421692*^9, 3.827058774138678*^9}},
+ CellLabel->"In[87]:=",ExpressionUUID->"3b032cb5-a5db-421c-b648-e744bc489694"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     FractionBox[
+      RowBox[{
+       SuperscriptBox[
+        RowBox[{
+         SuperscriptBox["f0", "\[Prime]",
+          MultilineFunction->None], "[", "r", "]"}], "2"], "-", 
+       RowBox[{"4", " ", 
+        RowBox[{"f0", "[", "r", "]"}], " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"-", "1"}], "+", 
+          RowBox[{
+           SuperscriptBox["f0", "\[Prime]\[Prime]",
+            MultilineFunction->None], "[", "r", "]"}]}], ")"}]}]}], 
+      RowBox[{"4", " ", 
+       SuperscriptBox[
+        RowBox[{"f0", "[", "r", "]"}], "2"]}]], ",", "0", ",", "0", ",", 
+     "0"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     FractionBox[
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "4"}], " ", 
+        RowBox[{"f0", "[", "r", "]"}]}], "+", 
+       SuperscriptBox[
+        RowBox[{
+         SuperscriptBox["f0", "\[Prime]",
+          MultilineFunction->None], "[", "r", "]"}], "2"]}], 
+      RowBox[{"4", " ", 
+       SuperscriptBox[
+        RowBox[{"f0", "[", "r", "]"}], "2"]}]], ",", "0", ",", "0"}], "}"}], 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{
+      RowBox[{"-", 
+       FractionBox[
+        SuperscriptBox[
+         RowBox[{
+          SuperscriptBox["f0", "\[Prime]",
+           MultilineFunction->None], "[", "r", "]"}], "2"], 
+        RowBox[{"4", " ", 
+         RowBox[{"f0", "[", "r", "]"}]}]]}], "+", 
+      FractionBox[
+       RowBox[{
+        SuperscriptBox["f0", "\[Prime]\[Prime]",
+         MultilineFunction->None], "[", "r", "]"}], "2"]}], ",", "0"}], "}"}],
+    ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", 
+     RowBox[{"-", 
+      FractionBox[
+       RowBox[{
+        SuperscriptBox[
+         RowBox[{"Sin", "[", "\[Theta]", "]"}], "2"], " ", 
+        RowBox[{"(", 
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{
+            SuperscriptBox["f0", "\[Prime]",
+             MultilineFunction->None], "[", "r", "]"}], "2"], "-", 
+          RowBox[{"2", " ", 
+           RowBox[{"f0", "[", "r", "]"}], " ", 
+           RowBox[{
+            SuperscriptBox["f0", "\[Prime]\[Prime]",
+             MultilineFunction->None], "[", "r", "]"}]}]}], ")"}]}], 
+       RowBox[{"4", " ", 
+        RowBox[{"f0", "[", "r", "]"}]}]]}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.827057989717524*^9, 3.827058026229397*^9, 3.827058108949787*^9, 
+   3.827058146749456*^9, 3.827058194668941*^9, 3.827058232532981*^9, 
+   3.8270583460745173`*^9, {3.827058427684834*^9, 3.8270584404930153`*^9}, 
+   3.827058776320039*^9},
+ CellLabel->"Out[91]=",ExpressionUUID->"37e471c3-5405-40ed-a78d-3e52630a839f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"r\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\\\ \\!\\(\\*RowBox[{\\\"\[Theta]\\\
+\"}]\\)\\)]\\)=\\!\\(\\*RowBox[{RowBox[{\\\"-\\\", FractionBox[\\\"1\\\", \
+\\\"2\\\"]}], \\\" \\\", RowBox[{SuperscriptBox[\\\"f0\\\", \\\"\[Prime]\\\", \
+Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\\\"}]}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`r, ComputeTensors`\[Theta], 
+   ComputeTensors`\[Theta], Rational[-1, 2] 
+   Derivative[1][ComputeTensors`f0][ComputeTensors`r]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.827058776323962*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"f099e5f9-770f-4024-80de-02cd411d1df6"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"r\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\\\ \\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\
+\\)\\)]\\)=\\!\\(\\*RowBox[{RowBox[{\\\"-\\\", FractionBox[\\\"1\\\", \\\"2\\\
+\"]}], \\\" \\\", SuperscriptBox[RowBox[{\\\"Sin\\\", \\\"[\\\", \\\"\[Theta]\
+\\\", \\\"]\\\"}], \\\"2\\\"], \\\" \\\", RowBox[{SuperscriptBox[\\\"f0\\\", \
+\\\"\[Prime]\\\", Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\
+\\\"}]}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`r, ComputeTensors`\[Phi], ComputeTensors`\[Phi],
+    Rational[-1, 2] Sin[ComputeTensors`\[Theta]]^2 
+   Derivative[1][ComputeTensors`f0][ComputeTensors`r]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.827058776327395*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"de9e0c27-a275-4474-90b6-b7df0870732f"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"r\\\"}]\\)\\\\ \\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\
+\\)]\\)=\\!\\(\\*FractionBox[RowBox[{SuperscriptBox[\\\"f0\\\", \
+\\\"\[Prime]\\\", Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\
+\\\"}], RowBox[{\\\"2\\\", \\\" \\\", RowBox[{\\\"f0\\\", \\\"[\\\", \
+\\\"r\\\", \\\"]\\\"}]}]]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`\[Theta], ComputeTensors`r, 
+   ComputeTensors`\[Theta], Rational[1, 2] 
+   ComputeTensors`f0[ComputeTensors`r]^(-1) 
+   Derivative[1][ComputeTensors`f0][ComputeTensors`r]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.8270587763308907`*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"2130cc02-1d16-4f6e-9611-0796fcc02858"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\\\ \\!\\(\\*RowBox[{\\\"r\\\"}]\\)\
+\\)]\\)=\\!\\(\\*FractionBox[RowBox[{SuperscriptBox[\\\"f0\\\", \
+\\\"\[Prime]\\\", Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\
+\\\"}], RowBox[{\\\"2\\\", \\\" \\\", RowBox[{\\\"f0\\\", \\\"[\\\", \
+\\\"r\\\", \\\"]\\\"}]}]]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`\[Theta], ComputeTensors`\[Theta], 
+   ComputeTensors`r, Rational[1, 2] ComputeTensors`f0[ComputeTensors`r]^(-1) 
+   Derivative[1][ComputeTensors`f0][ComputeTensors`r]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.8270587763343143`*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"9d4ccc0f-f241-438d-8570-167ac73361d8"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\\\ \\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\
+\\)\\)]\\)=\\!\\(\\*RowBox[{RowBox[{\\\"-\\\", RowBox[{\\\"Cos\\\", \
+\\\"[\\\", \\\"\[Theta]\\\", \\\"]\\\"}]}], \\\" \\\", RowBox[{\\\"Sin\\\", \
+\\\"[\\\", \\\"\[Theta]\\\", \\\"]\\\"}]}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`\[Theta], ComputeTensors`\[Phi], 
+   ComputeTensors`\[Phi], -Cos[ComputeTensors`\[Theta]] 
+   Sin[ComputeTensors`\[Theta]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.827058776337762*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"a02dfda8-ca1d-4316-8066-f155efa08ce6"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"r\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\)]\\)=\\!\\(\\*FractionBox[RowBox[{\
+SuperscriptBox[\\\"f0\\\", \\\"\[Prime]\\\", Rule[MultilineFunction, None]], \
+\\\"[\\\", \\\"r\\\", \\\"]\\\"}], RowBox[{\\\"2\\\", \\\" \\\", \
+RowBox[{\\\"f0\\\", \\\"[\\\", \\\"r\\\", \\\"]\\\"}]}]]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`\[Phi], ComputeTensors`r, ComputeTensors`\[Phi],
+    Rational[1, 2] ComputeTensors`f0[ComputeTensors`r]^(-1) 
+   Derivative[1][ComputeTensors`f0][ComputeTensors`r]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.827058776341248*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"874a1bee-ff99-42ec-b87f-4a45ba900aab"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\)]\\)=\\!\\(\\*RowBox[{\\\"Cot\\\", \
+\\\"[\\\", \\\"\[Theta]\\\", \\\"]\\\"}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`\[Phi], ComputeTensors`\[Theta], 
+   ComputeTensors`\[Phi], 
+   Cot[ComputeTensors`\[Theta]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.827058776344966*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"5a2470a1-6af7-44d8-b5bd-45f1ae6377eb"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"r\\\"}]\\)\\)]\\)=\\!\\(\\*FractionBox[RowBox[{\
+SuperscriptBox[\\\"f0\\\", \\\"\[Prime]\\\", Rule[MultilineFunction, None]], \
+\\\"[\\\", \\\"r\\\", \\\"]\\\"}], RowBox[{\\\"2\\\", \\\" \\\", \
+RowBox[{\\\"f0\\\", \\\"[\\\", \\\"r\\\", \\\"]\\\"}]}]]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`\[Phi], ComputeTensors`\[Phi], ComputeTensors`r,
+    Rational[1, 2] ComputeTensors`f0[ComputeTensors`r]^(-1) 
+   Derivative[1][ComputeTensors`f0][ComputeTensors`r]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.827058776348687*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"7b4c62c9-f991-4292-ba53-1b686ce6d7ed"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[SuperscriptBox[\\(\
+\[CapitalGamma]\\), \\(\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\)], \
+\\(\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\)]\\)=\\!\\(\\*RowBox[{\\\"Cot\\\", \
+\\\"[\\\", \\\"\[Theta]\\\", \\\"]\\\"}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[SuperscriptBox[\(\[CapitalGamma]\), \(`1`\)], \(`2`\\ \
+`3`\)]\)=`4`", ComputeTensors`\[Phi], ComputeTensors`\[Phi], 
+   ComputeTensors`\[Theta], 
+   Cot[ComputeTensors`\[Theta]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.827058776352539*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"8ead649b-01c3-4476-8e8e-53de160ff48f"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[\\(G\\), \\(\\!\\(\\*RowBox[{\\\
+\"t\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"t\\\"}]\\)\\)]\\)=\\!\\(\\*FractionBox[RowBox[{\
+SuperscriptBox[RowBox[{SuperscriptBox[\\\"f0\\\", \\\"\[Prime]\\\", \
+Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\\\"}], \
+\\\"2\\\"], \\\"-\\\", RowBox[{\\\"4\\\", \\\" \\\", RowBox[{\\\"f0\\\", \
+\\\"[\\\", \\\"r\\\", \\\"]\\\"}], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{RowBox[{\\\"-\\\", \\\"1\\\"}], \\\"+\\\", \
+RowBox[{SuperscriptBox[\\\"f0\\\", \\\"\[Prime]\[Prime]\\\", \
+Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\\\"}]}], \
+\\\")\\\"}]}]}], RowBox[{\\\"4\\\", \\\" \\\", \
+SuperscriptBox[RowBox[{\\\"f0\\\", \\\"[\\\", \\\"r\\\", \\\"]\\\"}], \\\"2\\\
+\"]}]]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[\(G\), \(`1`\\ `2`\)]\)=`3`", ComputeTensors`t, 
+   ComputeTensors`t, Rational[1, 4] 
+   ComputeTensors`f0[ComputeTensors`r]^(-2) (
+    Derivative[1][ComputeTensors`f0][ComputeTensors`r]^2 - 4 
+    ComputeTensors`f0[ComputeTensors`r] (-1 + 
+     Derivative[2][ComputeTensors`f0][ComputeTensors`r]))],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.8270587763564043`*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"6e4e7556-fd63-4fa0-8c5d-d06c24023fe3"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[\\(G\\), \\(\\!\\(\\*RowBox[{\\\
+\"r\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"r\\\"}]\\)\\)]\\)=\\!\\(\\*FractionBox[RowBox[{RowBox[{\
+RowBox[{\\\"-\\\", \\\"4\\\"}], \\\" \\\", RowBox[{\\\"f0\\\", \\\"[\\\", \
+\\\"r\\\", \\\"]\\\"}]}], \\\"+\\\", SuperscriptBox[RowBox[{SuperscriptBox[\\\
+\"f0\\\", \\\"\[Prime]\\\", Rule[MultilineFunction, None]], \\\"[\\\", \
+\\\"r\\\", \\\"]\\\"}], \\\"2\\\"]}], RowBox[{\\\"4\\\", \\\" \\\", \
+SuperscriptBox[RowBox[{\\\"f0\\\", \\\"[\\\", \\\"r\\\", \\\"]\\\"}], \\\"2\\\
+\"]}]]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[\(G\), \(`1`\\ `2`\)]\)=`3`", ComputeTensors`r, 
+   ComputeTensors`r, Rational[1, 4] 
+   ComputeTensors`f0[ComputeTensors`r]^(-2) ((-4) 
+     ComputeTensors`f0[ComputeTensors`r] + 
+    Derivative[1][ComputeTensors`f0][ComputeTensors`r]^2)],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.827058776360737*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"5d289865-6fa4-4a0b-901e-1180fba9aa9a"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[\\(G\\), \\(\\!\\(\\*RowBox[{\\\
+\"\[Theta]\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\)]\\)=\\!\\(\\*RowBox[{RowBox[{\\\"-\\\
+\", FractionBox[SuperscriptBox[RowBox[{SuperscriptBox[\\\"f0\\\", \
+\\\"\[Prime]\\\", Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\
+\\\"}], \\\"2\\\"], RowBox[{\\\"4\\\", \\\" \\\", RowBox[{\\\"f0\\\", \\\"[\\\
+\", \\\"r\\\", \\\"]\\\"}]}]]}], \\\"+\\\", \
+FractionBox[RowBox[{SuperscriptBox[\\\"f0\\\", \\\"\[Prime]\[Prime]\\\", \
+Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\\\"}], \
+\\\"2\\\"]}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[\(G\), \(`1`\\ `2`\)]\)=`3`", ComputeTensors`\[Theta], 
+   ComputeTensors`\[Theta], 
+   Rational[-1, 4] ComputeTensors`f0[ComputeTensors`r]^(-1) 
+    Derivative[1][ComputeTensors`f0][ComputeTensors`r]^2 + 
+   Rational[1, 2] Derivative[2][ComputeTensors`f0][ComputeTensors`r]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.82705877636502*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"e53bc5b9-fad1-4dae-a198-c985aff4565e"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[\\(G\\), \\(\\!\\(\\*RowBox[{\\\
+\"\[Phi]\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\)]\\)=\\!\\(\\*RowBox[{\\\"-\\\", \
+FractionBox[RowBox[{SuperscriptBox[RowBox[{\\\"Sin\\\", \\\"[\\\", \\\"\
+\[Theta]\\\", \\\"]\\\"}], \\\"2\\\"], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{SuperscriptBox[RowBox[{SuperscriptBox[\\\"f0\\\", \\\"\[Prime]\\\", \
+Rule[MultilineFunction, None]], \\\"[\\\", \\\"r\\\", \\\"]\\\"}], \
+\\\"2\\\"], \\\"-\\\", RowBox[{\\\"2\\\", \\\" \\\", RowBox[{\\\"f0\\\", \
+\\\"[\\\", \\\"r\\\", \\\"]\\\"}], \\\" \\\", RowBox[{SuperscriptBox[\\\"f0\\\
+\", \\\"\[Prime]\[Prime]\\\", Rule[MultilineFunction, None]], \\\"[\\\", \
+\\\"r\\\", \\\"]\\\"}]}]}], \\\")\\\"}]}], RowBox[{\\\"4\\\", \\\" \\\", \
+RowBox[{\\\"f0\\\", \\\"[\\\", \\\"r\\\", \\\"]\\\"}]}]]}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[\(G\), \(`1`\\ `2`\)]\)=`3`", ComputeTensors`\[Phi], 
+   ComputeTensors`\[Phi], Rational[-1, 4] 
+   ComputeTensors`f0[ComputeTensors`r]^(-1) 
+   Sin[ComputeTensors`\[Theta]]^2 (
+    Derivative[1][ComputeTensors`f0][ComputeTensors`r]^2 - 2 
+    ComputeTensors`f0[ComputeTensors`r] 
+    Derivative[2][ComputeTensors`f0][ComputeTensors`r])],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.827058026246249*^9, 3.827058108960269*^9, 3.8270581467601852`*^9, 
+   3.8270581946801157`*^9, 3.8270582325388193`*^9, 3.8270583460791492`*^9, {
+   3.827058427688088*^9, 3.827058440496388*^9}, 3.8270587763696203`*^9},
+ CellLabel->
+  "During evaluation of \
+In[87]:=",ExpressionUUID->"fd96b957-2dcf-4ca0-8e60-ad8c72115020"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"f0", "[", "r_", "]"}], "=", 
+   RowBox[{
+    RowBox[{"r", "^", "2"}], "+", 
+    FractionBox["1", 
+     RowBox[{"1", "+", 
+      RowBox[{"r", "^", "2"}]}]]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"DisplayEinstein", "[", 
+  RowBox[{"einsteinTensor", ",", "coords"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", "f0", "]"}]}], "Input",
+ CellChangeTimes->{{3.8269887092573566`*^9, 3.8269887538493557`*^9}, 
+   3.827058593335718*^9, {3.827058631448676*^9, 3.8270586457018833`*^9}},
+ CellLabel->"In[83]:=",ExpressionUUID->"ad7b6721-70c7-483c-a02f-e88f7fbe1447"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[\\(G\\), \\(\\!\\(\\*RowBox[{\\\
+\"t\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"t\\\"}]\\)\\)]\\)=\\!\\(\\*FractionBox[RowBox[{\
+SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{RowBox[{\\\"2\\\", \\\" \\\", \\\"r\
+\\\"}], \\\"-\\\", FractionBox[RowBox[{\\\"2\\\", \\\" \\\", \\\"r\\\"}], \
+SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \\\"2\\\"]]}], \
+\\\")\\\"}], \\\"2\\\"], \\\"-\\\", RowBox[{\\\"4\\\", \\\" \\\", \
+RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+FractionBox[RowBox[{\\\"8\\\", \\\" \\\", SuperscriptBox[\\\"r\\\", \
+\\\"2\\\"]}], SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \\\"3\\\"]], \\\"-\\\", \
+FractionBox[\\\"2\\\", SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \
+\\\"+\\\", SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \
+\\\"2\\\"]]}], \\\")\\\"}], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{SuperscriptBox[\\\"r\\\", \\\"2\\\"], \\\"+\\\", \
+FractionBox[\\\"1\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}]]}], \\\")\\\"}]}]}], \
+RowBox[{\\\"4\\\", \\\" \\\", SuperscriptBox[RowBox[{\\\"(\\\", \
+RowBox[{SuperscriptBox[\\\"r\\\", \\\"2\\\"], \\\"+\\\", \
+FractionBox[\\\"1\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}]]}], \\\")\\\"}], \\\"2\\\"]}]]\\)\"\>",
+  
+  StringForm[
+  "\!\(\*SubscriptBox[\(G\), \(`1`\\ `2`\)]\)=`3`", ComputeTensors`t, 
+   ComputeTensors`t, 
+   Rational[1, 4] (
+     ComputeTensors`r^2 + (1 + ComputeTensors`r^2)^(-1))^(-2) ((
+      2 ComputeTensors`r - 2 
+      ComputeTensors`r (1 + ComputeTensors`r^2)^(-2))^2 - 
+    4 (1 + 8 ComputeTensors`r^2 (1 + ComputeTensors`r^2)^(-3) - 
+     2 (1 + ComputeTensors`r^2)^(-2)) (
+     ComputeTensors`r^2 + (1 + ComputeTensors`r^2)^(-1)))],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.8270586462315617`*^9},
+ CellLabel->
+  "During evaluation of \
+In[83]:=",ExpressionUUID->"304a9629-c823-4830-9446-9fe25250c54f"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[\\(G\\), \\(\\!\\(\\*RowBox[{\\\
+\"r\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"r\\\"}]\\)\\)]\\)=\\!\\(\\*FractionBox[RowBox[{\
+SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{RowBox[{\\\"2\\\", \\\" \\\", \\\"r\
+\\\"}], \\\"-\\\", FractionBox[RowBox[{\\\"2\\\", \\\" \\\", \\\"r\\\"}], \
+SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \\\"2\\\"]]}], \
+\\\")\\\"}], \\\"2\\\"], \\\"-\\\", RowBox[{\\\"4\\\", \\\" \\\", \
+RowBox[{\\\"(\\\", RowBox[{SuperscriptBox[\\\"r\\\", \\\"2\\\"], \\\"+\\\", \
+FractionBox[\\\"1\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}]]}], \\\")\\\"}]}]}], \
+RowBox[{\\\"4\\\", \\\" \\\", SuperscriptBox[RowBox[{\\\"(\\\", \
+RowBox[{SuperscriptBox[\\\"r\\\", \\\"2\\\"], \\\"+\\\", \
+FractionBox[\\\"1\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}]]}], \\\")\\\"}], \\\"2\\\"]}]]\\)\"\>",
+  
+  StringForm[
+  "\!\(\*SubscriptBox[\(G\), \(`1`\\ `2`\)]\)=`3`", ComputeTensors`r, 
+   ComputeTensors`r, 
+   Rational[1, 4] (
+     ComputeTensors`r^2 + (1 + ComputeTensors`r^2)^(-1))^(-2) ((
+      2 ComputeTensors`r - 2 
+      ComputeTensors`r (1 + ComputeTensors`r^2)^(-2))^2 - 
+    4 (ComputeTensors`r^2 + (1 + ComputeTensors`r^2)^(-1)))],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.8270586462376757`*^9},
+ CellLabel->
+  "During evaluation of \
+In[83]:=",ExpressionUUID->"f297ccb5-ca28-4df3-83fa-debd452f3872"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[\\(G\\), \\(\\!\\(\\*RowBox[{\\\
+\"\[Theta]\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"\[Theta]\\\"}]\\)\\)]\\)=\\!\\(\\*RowBox[{RowBox[{\
+FractionBox[\\\"1\\\", \\\"2\\\"], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{\\\"2\\\", \\\"+\\\", FractionBox[RowBox[{\\\"8\\\", \\\" \\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], SuperscriptBox[RowBox[{\\\"(\\\", \
+RowBox[{\\\"1\\\", \\\"+\\\", SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\
+\"}], \\\"3\\\"]], \\\"-\\\", FractionBox[\\\"2\\\", \
+SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \\\"2\\\"]]}], \
+\\\")\\\"}]}], \\\"-\\\", FractionBox[SuperscriptBox[RowBox[{\\\"(\\\", \
+RowBox[{RowBox[{\\\"2\\\", \\\" \\\", \\\"r\\\"}], \\\"-\\\", \
+FractionBox[RowBox[{\\\"2\\\", \\\" \\\", \\\"r\\\"}], \
+SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \\\"2\\\"]]}], \
+\\\")\\\"}], \\\"2\\\"], RowBox[{\\\"4\\\", \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{SuperscriptBox[\\\"r\\\", \\\"2\\\"], \\\"+\\\", \
+FractionBox[\\\"1\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}]]}], \\\")\\\"}]}]]}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[\(G\), \(`1`\\ `2`\)]\)=`3`", ComputeTensors`\[Theta], 
+   ComputeTensors`\[Theta], 
+   Rational[1, 2] (2 + 8 ComputeTensors`r^2 (1 + ComputeTensors`r^2)^(-3) - 
+     2 (1 + ComputeTensors`r^2)^(-2)) + 
+   Rational[-1, 4] (2 ComputeTensors`r - 2 
+      ComputeTensors`r (1 + ComputeTensors`r^2)^(-2))^2/(
+    ComputeTensors`r^2 + (1 + ComputeTensors`r^2)^(-1))],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.827058646242972*^9},
+ CellLabel->
+  "During evaluation of \
+In[83]:=",ExpressionUUID->"ee68f9d4-5dfe-42d6-a7c0-ad1501d808ed"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\\!\\(\\*SubscriptBox[\\(G\\), \\(\\!\\(\\*RowBox[{\\\
+\"\[Phi]\\\"}]\\)\\\\ \
+\\!\\(\\*RowBox[{\\\"\[Phi]\\\"}]\\)\\)]\\)=\\!\\(\\*RowBox[{\\\"-\\\", \
+FractionBox[RowBox[{RowBox[{\\\"(\\\", RowBox[{SuperscriptBox[RowBox[{\\\"(\\\
+\", RowBox[{RowBox[{\\\"2\\\", \\\" \\\", \\\"r\\\"}], \\\"-\\\", \
+FractionBox[RowBox[{\\\"2\\\", \\\" \\\", \\\"r\\\"}], \
+SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \\\"2\\\"]]}], \
+\\\")\\\"}], \\\"2\\\"], \\\"-\\\", RowBox[{\\\"2\\\", \\\" \\\", \
+RowBox[{\\\"(\\\", RowBox[{\\\"2\\\", \\\"+\\\", \
+FractionBox[RowBox[{\\\"8\\\", \\\" \\\", SuperscriptBox[\\\"r\\\", \
+\\\"2\\\"]}], SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \\\"3\\\"]], \\\"-\\\", \
+FractionBox[\\\"2\\\", SuperscriptBox[RowBox[{\\\"(\\\", RowBox[{\\\"1\\\", \
+\\\"+\\\", SuperscriptBox[\\\"r\\\", \\\"2\\\"]}], \\\")\\\"}], \
+\\\"2\\\"]]}], \\\")\\\"}], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{SuperscriptBox[\\\"r\\\", \\\"2\\\"], \\\"+\\\", \
+FractionBox[\\\"1\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}]]}], \\\")\\\"}]}]}], \\\")\\\"}], \\\" \
+\\\", SuperscriptBox[RowBox[{\\\"Sin\\\", \\\"[\\\", \\\"\[Theta]\\\", \
+\\\"]\\\"}], \\\"2\\\"]}], RowBox[{\\\"4\\\", \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{SuperscriptBox[\\\"r\\\", \\\"2\\\"], \\\"+\\\", \
+FractionBox[\\\"1\\\", RowBox[{\\\"1\\\", \\\"+\\\", \
+SuperscriptBox[\\\"r\\\", \\\"2\\\"]}]]}], \\\")\\\"}]}]]}]\\)\"\>",
+  StringForm[
+  "\!\(\*SubscriptBox[\(G\), \(`1`\\ `2`\)]\)=`3`", ComputeTensors`\[Phi], 
+   ComputeTensors`\[Phi], 
+   Rational[-1, 4] (
+     ComputeTensors`r^2 + (1 + ComputeTensors`r^2)^(-1))^(-1) ((
+      2 ComputeTensors`r - 2 
+      ComputeTensors`r (1 + ComputeTensors`r^2)^(-2))^2 - 
+    2 (2 + 8 ComputeTensors`r^2 (1 + ComputeTensors`r^2)^(-3) - 
+     2 (1 + ComputeTensors`r^2)^(-2)) (
+     ComputeTensors`r^2 + (1 + ComputeTensors`r^2)^(-1))) 
+   Sin[ComputeTensors`\[Theta]]^2],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.8270586462479277`*^9},
+ CellLabel->
+  "During evaluation of \
+In[83]:=",ExpressionUUID->"baf77267-9c5a-481f-be55-23b8d37ffe56"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{472.5, 783.},
+WindowMargins->{{4.5, Automatic}, {Automatic, 4.5}},
+FrontEndVersion->"12.2 for Linux x86 (64-bit) (December 12, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"7dd9f226-65fe-480e-bd84-f073e24ccf0d"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 178, 3, 45, "Subsubsection",ExpressionUUID->"01b4bbc3-8de3-490b-b97f-53000c195d6f"],
+Cell[CellGroupData[{
+Cell[783, 29, 341, 6, 51, "Input",ExpressionUUID->"3f535c68-a061-4eeb-98f3-b090469aec53"],
+Cell[1127, 37, 724, 11, 55, "Output",ExpressionUUID->"fa94acab-cd5d-4edb-a54d-a160c12fbf39"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1888, 53, 408, 6, 51, "Input",ExpressionUUID->"991519cc-be6b-4eab-b1fb-bda330fb413d"],
+Cell[2299, 61, 893, 22, 58, "Output",ExpressionUUID->"68f48b1f-100e-45aa-a8ef-6b329d36c2cf"],
+Cell[3195, 85, 446, 7, 33, "Output",ExpressionUUID->"b744a3d1-3237-4038-8eec-a5e491b26059"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3678, 97, 1599, 35, 278, "Input",ExpressionUUID->"3b032cb5-a5db-421c-b648-e744bc489694"],
+Cell[5280, 134, 2689, 79, 183, "Output",ExpressionUUID->"37e471c3-5405-40ed-a78d-3e52630a839f"],
+Cell[CellGroupData[{
+Cell[7994, 217, 1079, 19, 38, "Print",ExpressionUUID->"f099e5f9-770f-4024-80de-02cd411d1df6"],
+Cell[9076, 238, 1207, 21, 38, "Print",ExpressionUUID->"de9e0c27-a275-4474-90b6-b7df0870732f"],
+Cell[10286, 261, 1150, 21, 41, "Print",ExpressionUUID->"2130cc02-1d16-4f6e-9611-0796fcc02858"],
+Cell[11439, 284, 1146, 20, 41, "Print",ExpressionUUID->"9d4ccc0f-f241-438d-8570-167ac73361d8"],
+Cell[12588, 306, 1048, 19, 25, "Print",ExpressionUUID->"a02dfda8-ca1d-4316-8066-f155efa08ce6"],
+Cell[13639, 327, 1136, 20, 41, "Print",ExpressionUUID->"874a1bee-ff99-42ec-b87f-4a45ba900aab"],
+Cell[14778, 349, 911, 18, 25, "Print",ExpressionUUID->"5a2470a1-6af7-44d8-b5bd-45f1ae6377eb"],
+Cell[15692, 369, 1136, 20, 41, "Print",ExpressionUUID->"7b4c62c9-f991-4292-ba53-1b686ce6d7ed"],
+Cell[16831, 391, 911, 18, 25, "Print",ExpressionUUID->"8ead649b-01c3-4476-8e8e-53de160ff48f"],
+Cell[17745, 411, 1506, 28, 43, "Print",ExpressionUUID->"6e4e7556-fd63-4fa0-8c5d-d06c24023fe3"],
+Cell[19254, 441, 1233, 23, 43, "Print",ExpressionUUID->"5d289865-6fa4-4a0b-901e-1180fba9aa9a"],
+Cell[20490, 466, 1322, 24, 43, "Print",ExpressionUUID->"e53bc5b9-fad1-4dae-a198-c985aff4565e"],
+Cell[21815, 492, 1604, 28, 44, "Print",ExpressionUUID->"fd96b957-2dcf-4ca0-8e60-ad8c72115020"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[23468, 526, 618, 14, 86, "Input",ExpressionUUID->"ad7b6721-70c7-483c-a02f-e88f7fbe1447"],
+Cell[CellGroupData[{
+Cell[24111, 544, 2087, 38, 70, "Print",ExpressionUUID->"304a9629-c823-4830-9446-9fe25250c54f"],
+Cell[26201, 584, 1519, 29, 70, "Print",ExpressionUUID->"f297ccb5-ca28-4df3-83fa-debd452f3872"],
+Cell[27723, 615, 1844, 32, 70, "Print",ExpressionUUID->"ee68f9d4-5dfe-42d6-a7c0-ad1501d808ed"],
+Cell[29570, 649, 2281, 40, 98, "Print",ExpressionUUID->"baf77267-9c5a-481f-be55-23b8d37ffe56"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
