@@ -44,27 +44,25 @@ schwarzschildMetric=Block[{r,\[Theta],R},DiagonalMatrix[{-(1-R/r),(1-R/r)^-1,r^2
 
 
 frwFlatSphericalCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
-frwFlatSphericalMetric=Block[{r,a,\[Theta]},{-1,a[t]^2,r^2*a[t]^2,r^2*a[t]^2*Sin[\[Theta]]^2}];
+frwFlatSphericalMetric=Block[{r,a,t,\[Theta]},{-1,a[t]^2,r^2*a[t]^2,r^2*a[t]^2*Sin[\[Theta]]^2}];
 (*special case k=0 of reducedcircumference*)
 
 frwFlatCartesianCoords=Block[{t,x,y,z},{t,x,y,z}];
-frwFlatCartesianMetric=Block[{a},{-1,a[t]^2,a[t]^2,a[t]^2}];
+frwFlatCartesianMetric=Block[{t,a},{-1,a[t]^2,a[t]^2,a[t]^2}];
 
 frwReducedCircumferenceSphericalCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
 frwReducedCircumferenceSphericalMetric=Block[{a,r,k,\[Theta]},{-1,a[t]^2,a[t]^2/(1-k*r^2),a[t]^2*r^2,a[t]^2*r^2*Sin[\[Theta]]^2}];
 
 frwHypersphericalPositiveCurvatureCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
-frwHypersphericalPositiveCurvatureMetric=Block[{r,\[Theta],k},DiagonalMatrix[{-1,1,Sin[r*Sqrt[k]]^2/k,Sin[r*Sqrt[k]]^2/k*Sin[\[Theta]]^2}]];
+frwHypersphericalPositiveCurvatureMetric=Block[{r,a,t,\[Theta],k},DiagonalMatrix[{-1,a[t]^2,a[t]^2*Sin[r*Sqrt[k]]^2/k,a[t]^2*Sin[r*Sqrt[k]]^2/k*Sin[\[Theta]]^2}]];
 
 frwHypersphericalNegativeCurvatureCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
-frwHypersphericalNegativeCurvatureMetric=Block[{r,k,\[Theta]},DiagonalMatrix[{-1,1,Sinh[r*Sqrt[k]]^2/Abs[k],Sinh[r*Sqrt[k]]^2/Abs[k]*Sin[\[Theta]]^2}]];
+frwHypersphericalNegativeCurvatureMetric=Block[{r,a,t,k,\[Theta]},DiagonalMatrix[{-1,a[t]^2,a[t]^2*Sinh[r*Sqrt[k]]^2/Abs[k],a[t]^2*Sinh[r*Sqrt[k]]^2/Abs[k]*Sin[\[Theta]]^2}]];
 
 wormholeCoords=Block[{t,r,\[Theta],\[Phi]},{t,r,\[Theta],\[Phi]}];
 wormholeMetric=Block[{r,\[Theta],f0},DiagonalMatrix[{-1,1,f0[r],Sin[\[Theta]]^2*f0[r]}]];
 
 Begin["`Private`"]
-
-
 
 (* helper *)
 Nonzero[num_]:=Not[StringMatchQ[ToString[num],"0"] || StringMatchQ[ToString[num],"0."]];
@@ -83,7 +81,6 @@ ComputeChristoffel[metric_,x_]:=
 			(* the lower index part of christoffel symbol*)
 		Christoffel = (1/2) InvMetric . Christoffel;
 		Simplify[Christoffel]]
-
 
 (* Maloney's implementation *)
 ComputeRiemann[metric_,x_]:=
