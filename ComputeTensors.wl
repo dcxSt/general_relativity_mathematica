@@ -171,14 +171,14 @@ DisplayRicciTensor[ricci_,x_] :=
 				x[[i]], x[[j]], ricci[[i,j]]]]]]]];
 
 DisplayEinstein[einstein_,x_] := 
-	Block[{i,j,Dim}, 
+	Block[{alpha,beta,Dim}, 
 	Dim=Length[x];
-	For[i = 1, i <= Dim, i++,
-		For[j = 1, j <= Dim, j++,
-		 If[Nonzero[einstein[[i,j]]],
+	For[alpha = 1, alpha <= Dim, alpha++,
+		For[beta = 1, beta <= Dim, beta++,
+		 If[Nonzero[einstein[[alpha,beta]]],
 		  Print[
 		   StringForm["\!\(\*SubscriptBox[\(G\), \(`1`\\\ `2`\)]\)=`3`", 
-			coords[[i]], coords[[j]], einstein[[i,j]]]]]]]];
+			x[[alpha]], x[[beta]], einstein[[alpha,beta]]]]]]]];
 
 (* takes christoffel symbols and metric, returns geodesic equations*)
 (* x should have componants written as functions of s, e.g. x[t[s],x[s]], s is the worldline parameter *)
